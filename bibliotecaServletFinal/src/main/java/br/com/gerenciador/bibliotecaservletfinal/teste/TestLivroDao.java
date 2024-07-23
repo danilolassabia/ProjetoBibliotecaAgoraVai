@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestLivroDao {
     private LivroDao livroDao;
@@ -69,6 +68,18 @@ public class TestLivroDao {
 
         List<Livro> livros = livroDao.listarLivros();
         assertEquals(2, livros.size());
+    }
+
+    @Test
+    public void testFindLivroByIsbn() {
+        Livro livro1 = new Livro("12345", "Test Book 1", "Test Author 1", 10);
+
+        livroDao.cadastrar(livro1);
+        Livro foundLivro = livroDao.findLivroByIsbn("12345");
+        Livro notFoundLivro = livroDao.findLivroByIsbn("56789");
+
+        assertEquals(livro1.getTitulo(), foundLivro.getTitulo());
+        assertNull(notFoundLivro);
     }
 
 }

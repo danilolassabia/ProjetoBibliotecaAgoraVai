@@ -8,7 +8,9 @@ import java.util.List;
 import static br.com.gerenciador.bibliotecaservletfinal.util.InSession.inSession;
 
 public class UsuarioDao {
+    Usuario usuario;
     List<Usuario> usuarios;
+
     public void cadastrar(Usuario usuario){
         inSession(entityManager -> {
             entityManager.persist(usuario);
@@ -21,9 +23,9 @@ public class UsuarioDao {
         });
     }
 
-    public void remover(Long id){
+    public void remover(String email){
         inSession(entityManager -> {
-            Usuario usuario = entityManager.find(Usuario.class,id);
+            Usuario usuario = entityManager.find(Usuario.class,email);
             if (usuario != null) {
                 entityManager.remove(usuario);
             }
@@ -35,5 +37,12 @@ public class UsuarioDao {
             usuarios = entityManager.createQuery("select u from Usuario u", Usuario.class).getResultList();
         });
         return usuarios;
+    }
+
+    public Usuario findUsuarioByEmail(String email) {
+        inSession(entityManager -> {
+            usuario = entityManager.find(Usuario.class, email);
+        });
+        return usuario;
     }
 }
